@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://bpmmavrdmfbbj"]
+
+[ext_resource type="Script" uid="uid://x187mvr77bb2" path="res://puzzle_utils.gd" id="1_yomec"]
+
+[node name="PuzzleUtils" type="Node" unique_id=229840110]
+script = ExtResource("1_yomec")

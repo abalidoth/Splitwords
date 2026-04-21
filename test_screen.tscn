@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://cfc3d00rtg2j7"]
+
+[ext_resource type="Script" uid="uid://djuucjd50gifn" path="res://test_screen.gd" id="1_ptyqa"]
+
+[node name="TestScreen" type="Node2D" unique_id=688375528]
+script = ExtResource("1_ptyqa")
+
+[node name="Label" type="Label" parent="." unique_id=1494388967]
+unique_name_in_owner = true
+offset_left = 187.0
+offset_top = 179.0
+offset_right = 227.0
+offset_bottom = 202.0
+
+[node name="Label2" type="Label" parent="." unique_id=213745233]
+unique_name_in_owner = true
+offset_left = 436.0
+offset_top = 159.0
+offset_right = 476.0
+offset_bottom = 182.0
+
+[node name="Label3" type="Label" parent="." unique_id=778624057]
+unique_name_in_owner = true
+offset_left = 381.0
+offset_top = 323.0
+offset_right = 421.0
+offset_bottom = 346.0
