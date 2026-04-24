@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://cfc3d00rtg2j7"]
 
 [ext_resource type="Script" uid="uid://djuucjd50gifn" path="res://test_screen.gd" id="1_ptyqa"]
+[ext_resource type="PackedScene" uid="uid://dk8fu7bolvksp" path="res://letter_box.tscn" id="2_aur7u"]
 
 [node name="TestScreen" type="Node2D" unique_id=688375528]
 script = ExtResource("1_ptyqa")
@@ -25,3 +26,11 @@ offset_left = 381.0
 offset_top = 323.0
 offset_right = 421.0
 offset_bottom = 346.0
+
+[node name="LetterBox" parent="." unique_id=2086286596 instance=ExtResource("2_aur7u")]
+scale = Vector2(0.25, 0.25)
+
+[node name="LetterBox2" parent="." unique_id=130086481 instance=ExtResource("2_aur7u")]
+position = Vector2(96, -2)
+scale = Vector2(0.25, 0.25)
+grid_position = Vector2i(1, 0)

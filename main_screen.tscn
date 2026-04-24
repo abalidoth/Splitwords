@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://bswgrnq0ppnph"]
+
+[ext_resource type="Texture2D" uid="uid://b4110a72rmn5p" path="res://assets/newspaper_background.jpg" id="1_tjn2e"]
+
+[node name="MainScreen" type="Node2D" unique_id=1281281975]
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=261813979]
+offset_left = -15.000015
+offset_top = -46.0
+offset_right = 3953.0
+offset_bottom = 2410.0
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1_tjn2e")
+
+[node name="RightBar" type="Control" parent="." unique_id=961737408]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ClueHBox" type="HBoxContainer" parent="RightBar" unique_id=492287436]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="ItemList" type="ItemList" parent="RightBar/ClueHBox" unique_id=2011105012]
+layout_mode = 2

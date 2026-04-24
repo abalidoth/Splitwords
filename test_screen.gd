@@ -20,7 +20,7 @@ func _ready() -> void:
 		
 	print(slots)
 	print(verts)
-	puzzle=PuzzleUtils.Puzzle.new(slots, verts)
+	puzzle=PuzzleUtils.Puzzle.new(slots, verts, 100)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -41,7 +41,7 @@ func _process(delta: float) -> void:
 			output += "\n"
 		%Label3.text = output
 	else:
-		puzzle=PuzzleUtils.Puzzle.new(slots, verts)
+		puzzle=PuzzleUtils.Puzzle.new(slots, verts, 100)
 		puzzle_done = false
 		
 	%Label2.text = str(puzzle.state)

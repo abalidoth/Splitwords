@@ -17,6 +17,7 @@ config/icon="res://icon.svg"
 [autoload]
 
 PuzzleUtils="*uid://bpmmavrdmfbbj"
+SignalBus="*uid://cywxtlw4p4771"
 
 [physics]
 

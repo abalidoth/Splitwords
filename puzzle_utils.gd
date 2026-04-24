@@ -72,17 +72,20 @@ class Puzzle:
 	var update_queue: Array
 	var backtrack_choices: Array
 	
+	var obscurity: int #between 20 and 100
+	
 	var completed_puzzle:Dictionary[Vector2i, int]
 	
 	var state = alg_state.SETTLING
 	
 	var iterations: int = 0
 	
-	func _init(slots_: Array[Array], slot_vertical_: Array[bool]):
+	func _init(slots_: Array[Array], slot_vertical_: Array[bool], obscurity_: int):
 		iterations=0
 		assert(len(slots_)==len(slot_vertical_))
 		slots = slots_
 		slot_vertical = slot_vertical_
+		obscurity=obscurity_
 		squares = []
 		update_queue = []
 		backtrack_choices = []
@@ -105,7 +108,7 @@ class Puzzle:
 		iterations += 1
 		if state == alg_state.NEEDS_BACKTRACK:
 			if len(backtrack_choices)== 0:
-				_init(slots, slot_vertical) #just restart the process, something went wrong
+				_init(slots, slot_vertical, obscurity) #just restart the process, something went wrong
 				return
 			var backtrack = backtrack_choices.pop_back()
 			var bt_char_masks:Dictionary[Vector2i,Array] = backtrack[0]
@@ -143,10 +146,13 @@ class Puzzle:
 				cumulative_mask.append(blank_mask())
 			for i in slot:
 				slot_masks.append(char_masks[i])
-			for word:Array in PuzzleUtils.words[str(len(slot))]:
+			for word_and_pct:Array in PuzzleUtils.words[str(len(slot))]:
 				#str(len(slot)) because of the way the json imports
-				if check_slot(slot_masks, word):
-					update_mask_with_word(cumulative_mask, word)
+				var word = word_and_pct[0]
+				var pct = word_and_pct[1]
+				if pct >= (100.0-obscurity)/100.0:
+					if check_slot(slot_masks, word):
+						update_mask_with_word(cumulative_mask, word)
 			if not slot_mask_is_valid(cumulative_mask):
 				#we have broken something. backtrack!
 				state = alg_state.NEEDS_BACKTRACK
