@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://1oe6xhhwdk0j"]
+
+[ext_resource type="StyleBox" uid="uid://bdinixs5gwoq4" path="res://clue_bar_panel_style_box.tres" id="1_d3n5c"]
+
+[resource]
+PanelContainer/styles/panel = ExtResource("1_d3n5c")
+VBoxContainer/constants/separation = 0
