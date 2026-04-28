@@ -16,10 +16,11 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var words_file: FileAccess = FileAccess.open("res://tags_by_length.json", FileAccess.READ)
-	var json_t = words_file.get_as_text()
-	words = JSON.parse_string(json_t)
-	print("len words ", len(words))
+	for i in range(2,16):
+		var words_file: FileAccess = FileAccess.open("res://data/tags_length_"+str(i)+".json", FileAccess.READ)
+		var json_t = words_file.get_as_text()
+		words[i] = JSON.parse_string(json_t)
+		print("len words ", len(words))
 	
 	for i in range(len(alphabet)):
 		tokens.append(alphabet[i])
@@ -146,7 +147,7 @@ class Puzzle:
 				cumulative_mask.append(blank_mask())
 			for i in slot:
 				slot_masks.append(char_masks[i])
-			for word_and_pct:Array in PuzzleUtils.words[str(len(slot))]:
+			for word_and_pct:Array in PuzzleUtils.words[len(slot)]:
 				#str(len(slot)) because of the way the json imports
 				var word = word_and_pct[0]
 				var pct = word_and_pct[1]

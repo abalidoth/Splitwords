@@ -1,0 +1,62 @@
+[gd_scene format=3 uid="uid://cmjecl2kqt3eh"]
+
+[ext_resource type="Script" uid="uid://b8n4ol7gc8a1n" path="res://clue.gd" id="1_rlkw3"]
+[ext_resource type="StyleBox" uid="uid://6pxnqrsq2q8p" path="res://clear_clue_style_box.tres" id="2_44d5v"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_44d5v"]
+font_size = 24
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="StyleBoxLine" id="StyleBoxLine_0jjsr"]
+thickness = 7
+vertical = true
+
+[sub_resource type="LabelSettings" id="LabelSettings_xtpu2"]
+font_color = Color(0, 0, 0, 1)
+
+[node name="Clue" type="MarginContainer" unique_id=849508359]
+offset_right = 40.0
+offset_bottom = 40.0
+theme_override_constants/margin_left = 0
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_right = 0
+theme_override_constants/margin_bottom = 0
+script = ExtResource("1_rlkw3")
+default_color = Color(1, 1, 1, 1)
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=644697369]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/panel = ExtResource("2_44d5v")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=653756509]
+layout_mode = 2
+
+[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer" unique_id=831405489]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer" unique_id=1839865563]
+layout_mode = 2
+
+[node name="ClueNumber" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer" unique_id=837814458]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(30, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+text = "4"
+label_settings = SubResource("LabelSettings_44d5v")
+horizontal_alignment = 1
+
+[node name="VSeparator" type="VSeparator" parent="PanelContainer/VBoxContainer/HBoxContainer" unique_id=1413530576]
+layout_mode = 2
+size_flags_horizontal = 6
+theme_override_styles/separator = SubResource("StyleBoxLine_0jjsr")
+
+[node name="ClueText" type="Label" parent="PanelContainer/VBoxContainer/HBoxContainer" unique_id=625099979]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Lorem Ipsum Dolor Sit Amet"
+label_settings = SubResource("LabelSettings_xtpu2")
+autowrap_mode = 2

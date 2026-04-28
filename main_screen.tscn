@@ -1,8 +1,12 @@
 [gd_scene format=3 uid="uid://bswgrnq0ppnph"]
 
 [ext_resource type="Texture2D" uid="uid://b4110a72rmn5p" path="res://assets/newspaper_background.jpg" id="1_tjn2e"]
+[ext_resource type="Script" uid="uid://p7400iu8k58y" path="res://main_screen.gd" id="1_w0p2i"]
+[ext_resource type="LabelSettings" uid="uid://bjjxct1wj2rpt" path="res://down_across_label_settings.tres" id="3_7a4el"]
+[ext_resource type="Theme" uid="uid://1oe6xhhwdk0j" path="res://clue_bar_theme.tres" id="3_kwhh3"]
 
 [node name="MainScreen" type="Node2D" unique_id=1281281975]
+script = ExtResource("1_w0p2i")
 
 [node name="TextureRect" type="TextureRect" parent="." unique_id=261813979]
 offset_left = -15.000015
@@ -14,14 +18,87 @@ texture = ExtResource("1_tjn2e")
 
 [node name="RightBar" type="Control" parent="." unique_id=961737408]
 layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = 550.0
+offset_right = 1150.0
+offset_bottom = 640.0
+grow_horizontal = 0
+size_flags_horizontal = 3
+theme = ExtResource("3_kwhh3")
 
 [node name="ClueHBox" type="HBoxContainer" parent="RightBar" unique_id=492287436]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 0
 
-[node name="ItemList" type="ItemList" parent="RightBar/ClueHBox" unique_id=2011105012]
+[node name="AcrossLabelVBox" type="VBoxContainer" parent="RightBar/ClueHBox" unique_id=655800070]
 layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="RightBar/ClueHBox/AcrossLabelVBox" unique_id=287328163]
+layout_mode = 2
+text = "ACROSS"
+label_settings = ExtResource("3_7a4el")
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="RightBar/ClueHBox/AcrossLabelVBox" unique_id=760032207]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="RightBar/ClueHBox/AcrossLabelVBox" unique_id=187415044]
+layout_mode = 2
+
+[node name="AcrossScroll" type="ScrollContainer" parent="RightBar/ClueHBox/AcrossLabelVBox/PanelContainer" unique_id=223404657]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 600)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="AcrossVBox" type="VBoxContainer" parent="RightBar/ClueHBox/AcrossLabelVBox/PanelContainer/AcrossScroll" unique_id=2012791848]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VSeparator" type="VSeparator" parent="RightBar/ClueHBox" unique_id=219068089]
+layout_mode = 2
+
+[node name="DownLabelVBox" type="VBoxContainer" parent="RightBar/ClueHBox" unique_id=691586692]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label2" type="Label" parent="RightBar/ClueHBox/DownLabelVBox" unique_id=1443634064]
+layout_mode = 2
+text = "DOWN"
+label_settings = ExtResource("3_7a4el")
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="RightBar/ClueHBox/DownLabelVBox" unique_id=300524232]
+layout_mode = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="RightBar/ClueHBox/DownLabelVBox" unique_id=187581962]
+layout_mode = 2
+
+[node name="DownScroll" type="ScrollContainer" parent="RightBar/ClueHBox/DownLabelVBox/PanelContainer" unique_id=62770469]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 600)
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="DownVBox" type="VBoxContainer" parent="RightBar/ClueHBox/DownLabelVBox/PanelContainer/DownScroll" unique_id=2141944189]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="testlabel" type="Label" parent="." unique_id=567590182]
+unique_name_in_owner = true
+offset_right = 40.0
+offset_bottom = 23.0
