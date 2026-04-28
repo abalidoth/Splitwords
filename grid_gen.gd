@@ -53,6 +53,38 @@ class CrossGrid:
 					return false
 		return true
 		
+	func check_continuity() -> bool:
+		var to_check: Array[Vector2i] = []
+		var in_cont: Array[Vector2i] = []
+		for j in range(size.y):
+			for i in range(size.x):
+				var v: Vector2i = Vector2i(i,j)
+				if grid[v]!= -1:
+					to_check.append(v)
+		in_cont.append(to_check.pop_back())
+		
+		var recheck = true
+		while recheck:
+			var new_check: Array[Vector2i] = []
+			var new_cont : Array[Vector2i] = in_cont.duplicate_deep()
+			recheck = false
+			for v in to_check:
+				var good = false
+				for i in in_cont:
+					if abs((v-i).x)+abs((v-i).y) == 1:
+						recheck = true
+						new_cont.append(v)
+						good=true
+						break
+				if not good:
+					new_check.append(v)
+			to_check = new_check
+			in_cont = new_cont
+		if len(to_check)>0:
+			return false
+		else:
+			return true
+		
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
