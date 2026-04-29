@@ -84,7 +84,11 @@ class CrossGrid:
 			return false
 		else:
 			return true
+			
+	func check_singletons()
 		
+		
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
