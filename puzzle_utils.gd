@@ -10,6 +10,9 @@ var words: Dictionary
 
 enum alg_state{SETTLING, SETTLED, NEEDS_BACKTRACK, FINISHED}
 
+enum SingState{WALLED, SINGLE, OPEN}
+enum GridState{WALL,UNFIXED, OPEN}
+
 var tokens: Array[String]
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -58,7 +61,141 @@ func mask_or(a:Array[int], b:Array[int]):
 	return out
 
 
-	
+class CrossGrid:
+	var size: Vector2i
+	var grid: Dictionary[Vector2i,GridState] = {}
+	const array_3 = [
+		Vector2i(0,0),
+		Vector2i(0,1),
+		Vector2i(0,2),
+		Vector2i(1,0),
+		Vector2i(1,1),
+		Vector2i(1,2),
+		Vector2i(2,0),
+		Vector2i(2,1),
+		Vector2i(2,2),
+	]
+	func _init(size_: Vector2i):
+		size = size_
+		for j in range(size.y):
+			for i in range(size.x):
+				grid[Vector2i(i,j)]=GridState.UNFIXED
+				
+	func check_filled_lines() -> bool:
+		for j in range(size.y):
+			var has_empty: bool = false
+			for i in range(size.x):
+				if grid[Vector2i(i,j)] != GridState.WALL:
+					has_empty = true
+					break
+			if not has_empty:
+				return false
+		for i in range(size.x):
+			var has_empty: bool = false
+			for j in range(size.y):
+				if grid[Vector2i(i,j)] != GridState.WALL:
+					has_empty = true
+					break
+			if not has_empty:
+				return false
+		return true
+		
+	func check_3x3_block() -> bool:
+		for i in range(size.x-2):
+			for j in range(size.y-2):
+				var has_empty: bool = false
+				var v0 : Vector2i = Vector2i(i,j)
+				for v in array_3:
+					if grid[v0+v]!=GridState.WALL:
+						has_empty = true
+						break
+				if not has_empty:
+					return false
+		return true
+		
+	func check_continuity() -> bool:
+		var to_check: Array[Vector2i] = []
+		var in_cont: Array[Vector2i] = []
+		for j in range(size.y):
+			for i in range(size.x):
+				var v: Vector2i = Vector2i(i,j)
+				if grid[v]!= GridState.WALL:
+					to_check.append(v)
+		in_cont.append(to_check.pop_back())
+		
+		var recheck = true
+		while recheck:
+			var new_check: Array[Vector2i] = []
+			var new_cont : Array[Vector2i] = in_cont.duplicate_deep()
+			recheck = false
+			for v in to_check:
+				var good = false
+				for i in in_cont:
+					if abs((v-i).x)+abs((v-i).y) == 1:
+						recheck = true
+						new_cont.append(v)
+						good=true
+						break
+				if not good:
+					new_check.append(v)
+			to_check = new_check
+			in_cont = new_cont
+		if len(to_check)>0:
+			return false
+		else:
+			return true
+			
+	func check_singletons():
+		var out: Array[Vector2i] = []
+		for j in range(size.y):
+			var sing_state:SingState = SingState.WALLED
+			var last_coord: Vector2i
+			for i in range(size.x):
+				var v = Vector2i(i,j)
+				var g = grid[v]
+				if g == GridState.WALL:
+					if sing_state == SingState.WALLED:
+						pass
+					elif sing_state == SingState.SINGLE:
+						out.append(last_coord)
+						sing_state = SingState.WALLED
+					else: #SingState == SingState.OPEN:
+						sing_state = SingState.WALLED
+				else: # g == GridState.UNFIXED or g==GridState.OPEN:
+					if sing_state == SingState.WALLED:
+						last_coord = v
+						sing_state = SingState.SINGLE
+					else: #sing_state == SingState.SINGLE or sing_state == SingState.OPEN:
+						sing_state = SingState.OPEN
+			#check the end boundary
+			if sing_state == SingState.SINGLE:
+				out.append(last_coord)
+				
+		#repeat for columns
+		for i in range(size.x):
+			var sing_state:SingState = SingState.WALLED
+			var last_coord: Vector2i
+			for j in range(size.y):
+				var v = Vector2i(i,j)
+				var g = grid[v]
+				if g == GridState.WALL:
+					if sing_state == SingState.WALLED:
+						pass
+					elif sing_state == SingState.SINGLE:
+						out.append(last_coord)
+						sing_state = SingState.WALLED
+					else: #SingState == SingState.OPEN:
+						sing_state = SingState.WALLED
+				else: # g == GridState.UNFIXED or g==GridState.OPEN:
+					if sing_state == SingState.WALLED:
+						last_coord = v
+						sing_state = SingState.SINGLE
+					else: #sing_state == SingState.SINGLE or sing_state == SingState.OPEN:
+						sing_state = SingState.OPEN
+			#check the end boundary
+			if sing_state == SingState.SINGLE:
+				out.append(last_coord)
+		return out
 
 
 
