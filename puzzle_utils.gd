@@ -198,6 +198,45 @@ class CrossGrid:
 				out.append(last_coord)
 		return out
 
+	func generate_grid(symmetric: bool = true) -> void:
+		var checkpoint: Dictionary[Vector2i, GridState]
+		var last_block : Vector2i
+		var processing : bool = true
+		var broken: bool = false
+		
+		while processing:
+			var options : Array[Vector2i] = []
+			for j in range(size.y):
+				for i in range(size.x):
+					var vec: Vector2i = Vector2i(i,j)
+					if grid[vec] == GridState.UNFIXED:
+						options.append(vec)
+			if len(options) == 0:
+				processing = false
+				break
+			var option: Vector2i = options.pick_random()
+			checkpoint = grid.duplicate_deep()
+			grid[option]=GridState.WALL
+			if symmetric:
+				grid[size - Vector2i(1,1) - option] = GridState.WALL
+			last_block = option
+			
+			var finished_sing : bool = false
+			while not finished_sing:
+				var sings: Array[Vector2i] = check_singletons()
+				if len(sings) == 0:
+					finished_sing = true
+					break
+				for v in sings:
+					if grid[v] == GridState.OPEN:
+						broken = true
+						break
+				if broken:
+					break
+			if check_filled_lines():
+				broken = true
+			if check_3x3_block():
+			
 
 
 				
