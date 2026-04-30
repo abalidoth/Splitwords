@@ -8,7 +8,8 @@ const FULLMASK: int = 2**BSIZE - 1
 
 var words: Dictionary
 
-enum alg_state{SETTLING, SETTLED, NEEDS_BACKTRACK, FINISHED}
+enum AlgState{SETTLING, SETTLED, NEEDS_BACKTRACK, FINISHED}
+
 
 enum SingState{WALLED, SINGLE, OPEN}
 enum GridState{WALL,UNFIXED, OPEN}
@@ -214,7 +215,7 @@ class Puzzle:
 	
 	var completed_puzzle:Dictionary[Vector2i, int]
 	
-	var state = alg_state.SETTLING
+	var state = AlgState.SETTLING
 	
 	var iterations: int = 0
 	
@@ -240,11 +241,11 @@ class Puzzle:
 				else:
 					assert(square_to_slot[sq][int(v)] == null)
 					square_to_slot[sq][int(v)] = i
-		state = alg_state.SETTLING
+		state = AlgState.SETTLING
 					
 	func update() -> void:
 		iterations += 1
-		if state == alg_state.NEEDS_BACKTRACK:
+		if state == AlgState.NEEDS_BACKTRACK:
 			if len(backtrack_choices)== 0:
 				_init(slots, slot_vertical, obscurity) #just restart the process, something went wrong
 				return
@@ -269,11 +270,11 @@ class Puzzle:
 			bt_char_masks[new_choice_sq] = single_mask(new_choice_char)
 			backtrack_choices.append([bt_char_masks,new_choice_sq, new_choice_char])
 			update_queue = square_to_slot[new_choice_sq].duplicate_deep()+square_to_slot[bt_last_choice].duplicate_deep()
-			state = alg_state.SETTLING
+			state = AlgState.SETTLING
 			
-		elif state == alg_state.SETTLING:
+		elif state == AlgState.SETTLING:
 			if not update_queue:
-				state = alg_state.SETTLED
+				state = AlgState.SETTLED
 				return
 			var slot_idx:int = update_queue.pop_front()
 			var slot: Array[Vector2i] = slots[slot_idx]
@@ -293,7 +294,7 @@ class Puzzle:
 						update_mask_with_word(cumulative_mask, word)
 			if not slot_mask_is_valid(cumulative_mask):
 				#we have broken something. backtrack!
-				state = alg_state.NEEDS_BACKTRACK
+				state = AlgState.NEEDS_BACKTRACK
 			var changes: Array[bool] = blocks_changed(cumulative_mask,slot_masks)
 			for i in len(changes):
 				if changes[i]:
@@ -303,14 +304,14 @@ class Puzzle:
 						update_queue.append(cross_slot)
 				
 				
-		elif state == alg_state.SETTLED:
+		elif state == AlgState.SETTLED:
 			var sq_with_choices:Array[Vector2i] = []
 			for i in char_masks.keys():
 				if not is_mask_singleton(char_masks[i]):
 					sq_with_choices.append(i)
 			if not sq_with_choices:
 				#Everything is down to one choice. We're done!
-				state = alg_state.FINISHED
+				state = AlgState.FINISHED
 				for i in char_masks.keys():
 					var l = mask_to_list(char_masks[i])
 					assert(len(l)==1)
@@ -322,9 +323,9 @@ class Puzzle:
 			char_masks[new_choice_sq] = single_mask(new_choice_char)
 			backtrack_choices.append([char_masks,new_choice_sq, new_choice_char])
 			update_queue = square_to_slot[new_choice_sq].duplicate_deep()
-			state = alg_state.SETTLING
+			state = AlgState.SETTLING
 			
-		elif state == alg_state.FINISHED:
+		elif state == AlgState.FINISHED:
 			return
 		else:
 			assert(false) #something bad has happened with state

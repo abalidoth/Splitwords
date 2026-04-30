@@ -25,7 +25,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if puzzle.state != PuzzleUtils.alg_state.FINISHED:
+	if puzzle.state != PuzzleUtils.AlgState.FINISHED:
 		puzzle.update()
 	elif not puzzle_done:
 		puzzle_done = true
