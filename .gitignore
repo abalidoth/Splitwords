@@ -17,3 +17,7 @@ mono_crash.*.json
 
 #raw data
 xd/
+
+#huge file
+word_data.tres
+word_data.res

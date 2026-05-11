@@ -1,0 +1,166 @@
+[gd_scene format=3 uid="uid://btlv0o7tw3u2t"]
+
+[ext_resource type="Script" uid="uid://bdx1ed7ynluu6" path="res://new_game_menu.gd" id="1_3xvyj"]
+[ext_resource type="Texture2D" uid="uid://b4110a72rmn5p" path="res://assets/newspaper_background.jpg" id="2_v3d21"]
+[ext_resource type="Theme" uid="uid://t812tf66r7yw" path="res://game_menu_theme.tres" id="3_v3d21"]
+[ext_resource type="FontFile" uid="uid://bfyq08y0nbjp4" path="res://assets/Caveat-VariableFont_wght.ttf" id="4_elyp6"]
+[ext_resource type="FontFile" uid="uid://cjxm10iyt16sg" path="res://assets/RobotoMono-VariableFont_wght.ttf" id="4_rb5ra"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_elyp6"]
+font = ExtResource("4_rb5ra")
+font_size = 12
+font_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_rb5ra"]
+font = ExtResource("4_elyp6")
+font_size = 60
+font_color = Color(0.0648, 0.0648, 0.27, 1)
+outline_size = 1
+outline_color = Color(0.19434929, 0.19434926, 0.19434926, 1)
+
+[node name="NewGameMenu" type="Node2D" unique_id=1730024958]
+script = ExtResource("1_3xvyj")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=2062579174]
+offset_left = -15.0
+offset_top = -46.0
+offset_right = 3953.0
+offset_bottom = 2410.0
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("2_v3d21")
+
+[node name="CenterContainer" type="CenterContainer" parent="." unique_id=1084552757]
+offset_right = 1153.0
+offset_bottom = 649.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme = ExtResource("3_v3d21")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=1005367574]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CenterContainer/VBoxContainer" unique_id=1139173998]
+layout_mode = 2
+
+[node name="MenuLeftVBox" type="VBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer" unique_id=575251451]
+layout_mode = 2
+
+[node name="HeightMargin" type="MarginContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuLeftVBox" unique_id=329257211]
+layout_mode = 2
+
+[node name="HeightHBox" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuLeftVBox/HeightMargin" unique_id=1329052521]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="HeightLabel" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuLeftVBox/HeightMargin/HeightHBox" unique_id=392407306]
+layout_mode = 2
+size_flags_horizontal = 10
+text = "Rows  "
+
+[node name="HeightSpinBox" type="SpinBox" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuLeftVBox/HeightMargin/HeightHBox" unique_id=1816714066]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 4
+min_value = 3.0
+max_value = 8.0
+value = 4.0
+rounded = true
+
+[node name="WidthMargin" type="MarginContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuLeftVBox" unique_id=2059145092]
+layout_mode = 2
+
+[node name="WidthHBox" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuLeftVBox/WidthMargin" unique_id=875269906]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 4
+
+[node name="WidthLabel" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuLeftVBox/WidthMargin/WidthHBox" unique_id=751460865]
+layout_mode = 2
+text = "Columns  "
+
+[node name="WidthSpinBox" type="SpinBox" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuLeftVBox/WidthMargin/WidthHBox" unique_id=838709371]
+layout_mode = 2
+min_value = 3.0
+max_value = 8.0
+value = 4.0
+rounded = true
+
+[node name="SymmetricMargin" type="MarginContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuLeftVBox" unique_id=1981231770]
+layout_mode = 2
+
+[node name="SymmetricHBox" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuLeftVBox/SymmetricMargin" unique_id=1147631889]
+layout_mode = 2
+
+[node name="SymmetricLabel" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuLeftVBox/SymmetricMargin/SymmetricHBox" unique_id=1671262663]
+layout_mode = 2
+text = "Symmetric Grid  "
+
+[node name="SymmetricCheck" type="CheckBox" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuLeftVBox/SymmetricMargin/SymmetricHBox" unique_id=227293005]
+layout_mode = 2
+
+[node name="MenuRightVBox" type="VBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer" unique_id=103191543]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuRightVBox" unique_id=702093491]
+layout_mode = 2
+
+[node name="WordObscurityLabel" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuRightVBox/MarginContainer" unique_id=382209821]
+layout_mode = 2
+text = "Word Obscurity"
+
+[node name="MarginContainer2" type="MarginContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuRightVBox" unique_id=1755642857]
+layout_mode = 2
+theme_override_constants/margin_top = 0
+theme_override_constants/margin_bottom = 0
+
+[node name="ObscurityHBox" type="HBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuRightVBox/MarginContainer2" unique_id=892832470]
+layout_mode = 2
+
+[node name="ObscuritySlider" type="HSlider" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuRightVBox/MarginContainer2/ObscurityHBox" unique_id=758253070]
+custom_minimum_size = Vector2(170, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+min_value = 30.0
+value = 100.0
+rounded = true
+
+[node name="ObscurityValue" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuRightVBox/MarginContainer2/ObscurityHBox" unique_id=1557097717]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
+text = "100"
+
+[node name="MarginContainer3" type="MarginContainer" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuRightVBox" unique_id=1198909862]
+layout_mode = 2
+
+[node name="WordObscurityExplainer" type="Label" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuRightVBox/MarginContainer3" unique_id=15985590]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(200, 0)
+layout_mode = 2
+text = "The algorithm will only use the top 100% most common words. Lower values will be easier, but make puzzles take longer to generate."
+label_settings = SubResource("LabelSettings_elyp6")
+autowrap_mode = 3
+
+[node name="MarginContainer" type="MarginContainer" parent="CenterContainer/VBoxContainer" unique_id=134839847]
+layout_mode = 2
+
+[node name="CenterContainer" type="CenterContainer" parent="CenterContainer/VBoxContainer/MarginContainer" unique_id=703468295]
+layout_mode = 2
+
+[node name="GeneratePuzzleButton" type="Button" parent="CenterContainer/VBoxContainer/MarginContainer/CenterContainer" unique_id=613792296]
+layout_mode = 2
+text = "GENERATE PUZZLE!"
+
+[node name="Label" type="Label" parent="." unique_id=1220283925]
+offset_left = 377.0
+offset_top = 55.0
+offset_right = 811.0
+offset_bottom = 131.0
+text = "PUZZLE SETTINGS"
+label_settings = SubResource("LabelSettings_rb5ra")
+
+[connection signal="value_changed" from="CenterContainer/VBoxContainer/HBoxContainer/MenuRightVBox/MarginContainer2/ObscurityHBox/ObscuritySlider" to="." method="_on_h_slider_value_changed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/MarginContainer/CenterContainer/GeneratePuzzleButton" to="." method="_on_generate_puzzle_button_pressed"]

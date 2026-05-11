@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://eshput8u81d0"]
+
+[ext_resource type="Script" uid="uid://bl7ydy5jv8645" path="res://resource_converter.gd" id="1_kbeey"]
+
+[node name="ResourceConverter" type="Node" unique_id=1209850346]
+script = ExtResource("1_kbeey")

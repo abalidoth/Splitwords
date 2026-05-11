@@ -1,0 +1,18 @@
+[gd_resource type="Theme" format=3 uid="uid://t812tf66r7yw"]
+
+[ext_resource type="FontFile" uid="uid://bfyq08y0nbjp4" path="res://assets/Caveat-VariableFont_wght.ttf" id="1_5ra8k"]
+[ext_resource type="FontFile" uid="uid://cjxm10iyt16sg" path="res://assets/RobotoMono-VariableFont_wght.ttf" id="2_pnam1"]
+
+[resource]
+Button/font_sizes/font_size = 30
+Button/fonts/font = ExtResource("2_pnam1")
+Button/styles/normal = null
+Label/colors/font_color = Color(0.06666667, 0.06666667, 0.27058825, 1)
+Label/colors/font_outline_color = Color(1, 1, 1, 1)
+Label/font_sizes/font_size = 30
+Label/fonts/font = ExtResource("1_5ra8k")
+LineEdit/fonts/font = ExtResource("2_pnam1")
+MarginContainer/constants/margin_bottom = 10
+MarginContainer/constants/margin_left = 10
+MarginContainer/constants/margin_right = 10
+MarginContainer/constants/margin_top = 10

@@ -8,7 +8,11 @@ const FULLMASK: int = 2**BSIZE - 1
 
 var words: Dictionary
 
-enum AlgState{SETTLING, SETTLED, NEEDS_BACKTRACK, FINISHED}
+var tags_to_word_id: Dictionary[Array, Array]
+
+var clue_table: Array[Array]
+
+enum AlgState{SETTLING, SETTLED, NEEDS_BACKTRACK, GET_CLUES, FINISHED}
 
 
 enum SingState{WALLED, SINGLE, OPEN}
@@ -20,6 +24,26 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	var tags_file: FileAccess = FileAccess.open("res://data/tags_to_word_index.txt", FileAccess.READ)
+	var counter: int = 0
+	while tags_file.get_position() < tags_file.get_length():
+		counter += 1
+		var line = tags_file.get_csv_line()
+		var idx = int(line[0])
+		var tags = []
+		for i in line.slice(1):
+			tags.append(int(i))
+		if tags in tags_to_word_id:
+			tags_to_word_id[tags].append(idx)
+		else:
+			tags_to_word_id[tags] = [idx]
+		if counter%10000==0:
+			print(counter)
+		
+		
+	
+	
+	
 	for i in range(2,16):
 		var words_file: FileAccess = FileAccess.open("res://data/tags_length_"+str(i)+".json", FileAccess.READ)
 		var json_t = words_file.get_as_text()
@@ -65,6 +89,13 @@ func mask_or(a:Array[int], b:Array[int]):
 class CrossGrid:
 	var size: Vector2i
 	var grid: Dictionary[Vector2i,GridState] = {}
+	var slot_starts: Dictionary[int, Vector2i]
+	var across_slots: Array[int]
+	var down_slots: Array[int]
+	var across_slot_length: Dictionary[int, int]
+	var down_slot_length: Dictionary[int, int]
+	const RIGHT = Vector2i(1,0)
+	const DOWN = Vector2i(0,1)
 	const array_3 = [
 		Vector2i(0,0),
 		Vector2i(0,1),
@@ -197,6 +228,36 @@ class CrossGrid:
 			if sing_state == SingState.SINGLE:
 				out.append(last_coord)
 		return out
+		
+	func print_grid(numbers:bool = false) -> String:
+		var line = ""
+	
+		for i in range(size.x*3+1):
+			line+="-"
+		var s = ""
+		s+= line + "\n"
+		for j in range(size.y):
+			for i in range(size.x):
+				s+="|"
+				var v = Vector2i(i,j)
+				if grid[v] == GridState.WALL:
+					s += "##"
+				elif grid[v] == GridState.OPEN:
+					if numbers:
+						var n = slot_starts.find_key(v)
+						if n != null:
+							s += "%2d"%n
+						else:
+							s+= "  "
+					else:
+						s += "  "
+				else:
+					s += "??"
+			s += "|\n"
+			s += line
+			s+="\n"
+		return s
+					
 
 	func generate_grid(symmetric: bool = true) -> void:
 		var checkpoint: Dictionary[Vector2i, GridState]
@@ -205,6 +266,7 @@ class CrossGrid:
 		var broken: bool = false
 		
 		while processing:
+			#print(print_grid())
 			var options : Array[Vector2i] = []
 			for j in range(size.y):
 				for i in range(size.x):
@@ -231,17 +293,81 @@ class CrossGrid:
 					if grid[v] == GridState.OPEN:
 						broken = true
 						break
+					elif grid[v] == GridState.UNFIXED:
+						grid[v] = GridState.WALL
+					else:
+						pass
 				if broken:
 					break
-			if check_filled_lines():
+			if not broken and not check_filled_lines():
 				broken = true
-			if check_3x3_block():
+			if not broken and not check_3x3_block():
+				broken = true
+			if not broken and not check_continuity():
+				broken = true
+			if broken:
+				grid = checkpoint.duplicate_deep()
+				grid[last_block] = GridState.OPEN
+				if symmetric:
+					grid[size - Vector2i(1,1) - last_block] = GridState.OPEN
+		#print(print_grid())
+		
+	func generate_slots() -> void:
+		var clue_number: int = 1
+		for j in range(size.y):
+			for i in range(size.x):
+				var v = Vector2i(i,j)
+				if grid[v] == GridState.OPEN:
+					var flagged: bool = false
+					var up = v - DOWN
+					var left = v - RIGHT
+					if left not in grid or grid[left] == GridState.WALL:
+						flagged = true
+						slot_starts[clue_number] = v
+						across_slots.append(clue_number)
+						
+						var cursor = v
+						var l = 0
+						while cursor in grid and grid[cursor] == GridState.OPEN:
+							l+=1
+							cursor += RIGHT
+						across_slot_length[clue_number] = l
+					if up not in grid or grid[up] == GridState.WALL:
+						if not flagged:
+							flagged = true
+							slot_starts[clue_number] = v
+						down_slots.append(clue_number)
+						
+						var cursor = v
+						var l = 0
+						while cursor in grid and grid[cursor] == GridState.OPEN:
+							l+=1
+							cursor += DOWN
+						down_slot_length[clue_number] = l
+					if flagged:
+						clue_number += 1
+						
+							
+						
+						
+						
+						
+		
 			
 
 
 				
 				
 class Puzzle:
+	
+	const RIGHT = Vector2i(1,0)
+	const DOWN = Vector2i(0,1)
+	
+	var completion: float
+	
+	var size: Vector2i
+	var grid: CrossGrid
+	var symmetric: bool
 	var slots: Array[Array]
 	var slot_vertical: Array[bool]
 	var squares: Array[Vector2i]
@@ -258,20 +384,50 @@ class Puzzle:
 	
 	var iterations: int = 0
 	
-	func _init(slots_: Array[Array], slot_vertical_: Array[bool], obscurity_: int):
+	func _init(size_: Vector2i, obscurity_: int, symmetric_: bool) -> void:
+		completion = 0.0
+		size = size_
+		obscurity = obscurity_
+		symmetric = symmetric_
+		grid = CrossGrid.new(size)
+		grid.generate_grid(symmetric)
+		grid.generate_slots()
+		
+		slots = []
+		slot_vertical = []
+		
+		for ac in grid.across_slots:
+			var cursor = grid.slot_starts[ac]
+			var out = []
+			for i in range(grid.across_slot_length[ac]):
+				out.append(cursor)
+				cursor+= RIGHT
+			slots.append(out)
+			slot_vertical.append(false)
+			
+		
+		for dw in grid.down_slots:
+			var cursor = grid.slot_starts[dw]
+			var out = []
+			for i in range(grid.down_slot_length[dw]):
+				out.append(cursor)
+				cursor+= DOWN
+			slots.append(out)
+			slot_vertical.append(true)
+		
+		
 		iterations=0
-		assert(len(slots_)==len(slot_vertical_))
-		slots = slots_
-		slot_vertical = slot_vertical_
-		obscurity=obscurity_
 		squares = []
+		char_masks = {}
+		square_to_slot = {}
 		update_queue = []
 		backtrack_choices = []
 		for i in range(len(slots)):
-			var sl: Array[Vector2i] = slots[i]
+			var sl: Array = slots[i]
 			var v: bool = slot_vertical[i]
 			update_queue.append(i)
 			for sq in sl:
+				print(sq, " ", v)
 				if sq not in squares:
 					squares.append(sq)
 					square_to_slot[sq] = [null, null]
@@ -281,24 +437,69 @@ class Puzzle:
 					assert(square_to_slot[sq][int(v)] == null)
 					square_to_slot[sq][int(v)] = i
 		state = AlgState.SETTLING
+			
+	
+	#func old_init(slots_: Array[Array], slot_vertical_: Array[bool], obscurity_: int):
+		#iterations=0
+		#assert(len(slots_)==len(slot_vertical_))
+		#slots = slots_
+		#slot_vertical = slot_vertical_
+		#obscurity=obscurity_
+		#squares = []
+		#update_queue = []
+		#backtrack_choices = []
+		#for i in range(len(slots)):
+			#var sl: Array[Vector2i] = slots[i]
+			#var v: bool = slot_vertical[i]
+			#update_queue.append(i)
+			#for sq in sl:
+				#if sq not in squares:
+					#squares.append(sq)
+					#square_to_slot[sq] = [null, null]
+					#square_to_slot[sq][int(v)] = i
+					#char_masks[sq] = full_mask()
+				#else:
+					#assert(square_to_slot[sq][int(v)] == null)
+					#square_to_slot[sq][int(v)] = i
+		#state = AlgState.SETTLING
 					
 	func update() -> void:
+		
+		for sq in squares:
+			if is_mask_zero(char_masks[sq]):
+				print(sq, char_masks[sq])
+				assert(false)
+		
 		iterations += 1
+		
+		var potential = 0.0
+		var currently_open = 0.0
+		for sq in squares:
+			var ch = char_masks[sq]
+			currently_open += len(mask_to_list(ch))
+			potential += CHARS
+		completion = 1-currently_open/potential
+		print(currently_open," ",potential)
+		
 		if state == AlgState.NEEDS_BACKTRACK:
 			if len(backtrack_choices)== 0:
-				_init(slots, slot_vertical, obscurity) #just restart the process, something went wrong
+				_init(size, obscurity, symmetric) #just restart the process, something went wrong
 				return
 			var backtrack = backtrack_choices.pop_back()
-			var bt_char_masks:Dictionary[Vector2i,Array] = backtrack[0]
+			var bt_char_masks:Dictionary[Vector2i,Array] = backtrack[0].duplicate_deep()
 			var bt_last_choice: Vector2i = backtrack[1]
 			var bt_last_char: int = backtrack[2]
 			var sq_with_choices: Array[Vector2i] = []
 			var excluded_mask = exclude_mask(bt_char_masks[bt_last_choice], bt_last_char)
-			bt_char_masks[bt_last_choice] = excluded_mask
+			print(mask_to_list(bt_char_masks[bt_last_choice])," ",bt_last_char)
+			if is_mask_zero(excluded_mask):
+				#Unsolvable. Backtrack.
+				return
+			bt_char_masks[bt_last_choice] = excluded_mask.duplicate_deep()
 			for i in bt_char_masks.keys():
-				if is_mask_zero(char_masks[i]):
-					#Unsolvable state. Backtrack.
-					return
+				if is_mask_zero(bt_char_masks[i]):
+					#This should not be happening.
+					assert(false)
 				if not is_mask_singleton(bt_char_masks[i]):
 					sq_with_choices.append(i)
 			if not sq_with_choices:
@@ -306,17 +507,19 @@ class Puzzle:
 				return
 			var new_choice_sq: Vector2i = sq_with_choices.pick_random()
 			var new_choice_char: int = mask_to_list(bt_char_masks[new_choice_sq]).pick_random()
+			backtrack_choices.append([bt_char_masks.duplicate_deep(),new_choice_sq, new_choice_char])
 			bt_char_masks[new_choice_sq] = single_mask(new_choice_char)
-			backtrack_choices.append([bt_char_masks,new_choice_sq, new_choice_char])
+			char_masks = bt_char_masks.duplicate_deep()
 			update_queue = square_to_slot[new_choice_sq].duplicate_deep()+square_to_slot[bt_last_choice].duplicate_deep()
 			state = AlgState.SETTLING
 			
 		elif state == AlgState.SETTLING:
+				
 			if not update_queue:
 				state = AlgState.SETTLED
 				return
 			var slot_idx:int = update_queue.pop_front()
-			var slot: Array[Vector2i] = slots[slot_idx]
+			var slot: Array = slots[slot_idx]
 			var vert: bool = slot_vertical[slot_idx]
 			var slot_masks: Array[Array] = []
 			var cumulative_mask:Array[Array] = []
@@ -334,6 +537,7 @@ class Puzzle:
 			if not slot_mask_is_valid(cumulative_mask):
 				#we have broken something. backtrack!
 				state = AlgState.NEEDS_BACKTRACK
+				return
 			var changes: Array[bool] = blocks_changed(cumulative_mask,slot_masks)
 			for i in len(changes):
 				if changes[i]:
@@ -359,13 +563,16 @@ class Puzzle:
 			var new_choice_sq: Vector2i = sq_with_choices.pick_random()
 			var new_choice_list: Array[int] = mask_to_list(char_masks[new_choice_sq])
 			var new_choice_char: int = new_choice_list.pick_random()
+			backtrack_choices.append([char_masks.duplicate_deep(),new_choice_sq, new_choice_char])
 			char_masks[new_choice_sq] = single_mask(new_choice_char)
-			backtrack_choices.append([char_masks,new_choice_sq, new_choice_char])
 			update_queue = square_to_slot[new_choice_sq].duplicate_deep()
 			state = AlgState.SETTLING
 			
 		elif state == AlgState.FINISHED:
 			return
+			
+		elif state == AlgState.GET_CLUES:
+			pass
 		else:
 			assert(false) #something bad has happened with state
 				

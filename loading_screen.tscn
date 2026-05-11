@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://b75o8h03anbx8"]
+
+[ext_resource type="Script" uid="uid://cdae2oivuoq8v" path="res://loading_screen.gd" id="1_htrc2"]
+[ext_resource type="Texture2D" uid="uid://b4110a72rmn5p" path="res://assets/newspaper_background.jpg" id="1_mggpi"]
+
+[node name="LoadingScreen" type="Node2D" unique_id=1827114527]
+script = ExtResource("1_htrc2")
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1706068749]
+offset_left = -15.0
+offset_top = -46.0
+offset_right = 3953.0
+offset_bottom = 2410.0
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1_mggpi")
+
+[node name="ProgressVBox" type="VBoxContainer" parent="." unique_id=436867525]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(400, 0)
+offset_left = 405.0
+offset_top = 169.0
+offset_right = 805.0
+offset_bottom = 209.0

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://8re70xrp8qsm"]
+
+[ext_resource type="Script" uid="uid://bwb4wcy5kcng4" path="res://puzzle_holder.gd" id="1_cnw0s"]
+
+[node name="PuzzleHolder" type="Node" unique_id=2115896177]
+script = ExtResource("1_cnw0s")
