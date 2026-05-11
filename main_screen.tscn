@@ -102,3 +102,14 @@ size_flags_vertical = 3
 unique_name_in_owner = true
 offset_right = 40.0
 offset_bottom = 23.0
+
+[node name="Board" type="Node2D" parent="." unique_id=1061300598]
+unique_name_in_owner = true
+position = Vector2(70, 51)
+
+[node name="BlackBackground" type="ColorRect" parent="Board" unique_id=1397996149]
+unique_name_in_owner = true
+offset_right = 200.0
+offset_bottom = 200.0
+mouse_filter = 2
+color = Color(0, 0, 0, 1)

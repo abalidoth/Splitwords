@@ -6,11 +6,11 @@ const BSIZE:int = 29
 const NBLOCKS:int = 13
 const FULLMASK: int = 2**BSIZE - 1
 
-var words: Dictionary
+#var words: Dictionary
 
-var tags_to_word_id: Dictionary[Array, Array]
+#var tags_to_word_id: Dictionary[Array, Array]
 
-var clue_table: Array[Array]
+#var clue_table: Array[Array]
 
 enum AlgState{SETTLING, SETTLED, NEEDS_BACKTRACK, GET_CLUES, FINISHED}
 
@@ -21,34 +21,37 @@ enum GridState{WALL,UNFIXED, OPEN}
 var tokens: Array[String]
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
+var word_data: DataResource = load("res://word_data.tres")
+
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var tags_file: FileAccess = FileAccess.open("res://data/tags_to_word_index.txt", FileAccess.READ)
-	var counter: int = 0
-	while tags_file.get_position() < tags_file.get_length():
-		counter += 1
-		var line = tags_file.get_csv_line()
-		var idx = int(line[0])
-		var tags = []
-		for i in line.slice(1):
-			tags.append(int(i))
-		if tags in tags_to_word_id:
-			tags_to_word_id[tags].append(idx)
-		else:
-			tags_to_word_id[tags] = [idx]
-		if counter%10000==0:
-			print(counter)
+	#var tags_file: FileAccess = FileAccess.open("res://data/tags_to_word_index.txt", FileAccess.READ)
+	#var counter: int = 0
+	#while tags_file.get_position() < tags_file.get_length():
+		#counter += 1
+		#var line = tags_file.get_csv_line()
+		#var idx = int(line[0])
+		#var tags = []
+		#for i in line.slice(1):
+			#tags.append(int(i))
+		#if tags in tags_to_word_id:
+			#tags_to_word_id[tags].append(idx)
+		#else:
+			#tags_to_word_id[tags] = [idx]
+		#if counter%10000==0:
+			#print(counter)
 		
 		
 	
-	
-	
-	for i in range(2,16):
-		var words_file: FileAccess = FileAccess.open("res://data/tags_length_"+str(i)+".json", FileAccess.READ)
-		var json_t = words_file.get_as_text()
-		words[i] = JSON.parse_string(json_t)
-		print("len words ", len(words))
+	#
+	#
+	#for i in range(2,16):
+		#var words_file: FileAccess = FileAccess.open("res://data/tags_length_"+str(i)+".json", FileAccess.READ)
+		#var json_t = words_file.get_as_text()
+		#words[i] = JSON.parse_string(json_t)
+		#print("len words ", len(words))
 	
 	for i in range(len(alphabet)):
 		tokens.append(alphabet[i])
@@ -376,6 +379,12 @@ class Puzzle:
 	var update_queue: Array
 	var backtrack_choices: Array
 	
+	var slot_to_word_id: Array[int]
+	
+	var slot_to_word: Array[String]
+	
+	var slot_to_clue: Array[String]
+	
 	var obscurity: int #between 20 and 100
 	
 	var completed_puzzle:Dictionary[Vector2i, int]
@@ -395,6 +404,12 @@ class Puzzle:
 		
 		slots = []
 		slot_vertical = []
+		
+		slot_to_word_id = []
+		slot_to_word = []
+		slot_to_clue = []
+		
+		completed_puzzle={}
 		
 		for ac in grid.across_slots:
 			var cursor = grid.slot_starts[ac]
@@ -527,7 +542,7 @@ class Puzzle:
 				cumulative_mask.append(blank_mask())
 			for i in slot:
 				slot_masks.append(char_masks[i])
-			for word_and_pct:Array in PuzzleUtils.words[len(slot)]:
+			for word_and_pct:Array in PuzzleUtils.word_data.words[len(slot)]:
 				#str(len(slot)) because of the way the json imports
 				var word = word_and_pct[0]
 				var pct = word_and_pct[1]
@@ -553,8 +568,8 @@ class Puzzle:
 				if not is_mask_singleton(char_masks[i]):
 					sq_with_choices.append(i)
 			if not sq_with_choices:
-				#Everything is down to one choice. We're done!
-				state = AlgState.FINISHED
+				#Everything is down to one choice. We're done! go to clue selection
+				state = AlgState.GET_CLUES
 				for i in char_masks.keys():
 					var l = mask_to_list(char_masks[i])
 					assert(len(l)==1)
@@ -572,7 +587,38 @@ class Puzzle:
 			return
 			
 		elif state == AlgState.GET_CLUES:
-			pass
+			if len(slot_to_clue) < len(slots):
+				var slot_num: int = len(slot_to_clue)
+				var slot_positions = slots[slot_num]
+				var char_ids: Array=[]
+				var word_ids: Array = []
+				for pos in slot_positions:
+					char_ids.append(completed_puzzle[pos])
+				if char_ids not in PuzzleUtils.word_data.tags_to_word_id:
+					#something has gone wrong with puzzle gen, restart
+					_init(size, obscurity, symmetric)
+					return
+				word_ids = PuzzleUtils.word_data.tags_to_word_id[char_ids]
+				var clue_lines: Array = []
+				var word_ids_with_obscurity: Array = []
+				for word_id_possible in word_ids:
+					var line = PuzzleUtils.word_data.word_id_to_clues[word_id_possible]
+					if float(line[2]) >= (100.0-obscurity)/100.0:
+						word_ids_with_obscurity.append(word_id_possible)
+						clue_lines.append(line)
+				assert(len(clue_lines)>0) #if this is not true, something messed up
+				var choice = randi() % len(clue_lines)
+				var clue_line = clue_lines[choice]
+				var chosen_id = word_ids_with_obscurity[choice]
+				slot_to_word_id.append(chosen_id)
+				slot_to_word.append(clue_line[0])
+				slot_to_clue.append(clue_line[1][randi()%10])
+				
+				
+								
+			else:
+				state = AlgState.FINISHED
+			
 		else:
 			assert(false) #something bad has happened with state
 				

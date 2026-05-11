@@ -1,4 +1,5 @@
 extends Node2D
+class_name LetterBox
 
 @export var base_color: Color
 @export var hover_color: Color
@@ -32,6 +33,10 @@ func _ready() -> void:
 		modulate = base_color
 	got_selected.connect(SignalBus._on_letter_box_got_selected)
 	SignalBus.selection_occurred.connect(_on_signal_bus_selection_occurred)
+
+func set_clue_number(i: int)-> void:
+	%ClueLabel.show()
+	%ClueLabel.text = str(i)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -124,6 +129,7 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_area_2d_mouse_entered() -> void:
+	print("mouse", grid_position)
 	mouse_in = true
 	if selected:
 		modulate = selected_hover_color

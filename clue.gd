@@ -7,8 +7,10 @@ class_name Clue
 
 @export var clue_number: int
 @export var clue_text: String
+
+@export var clue_index: int #this is the invisible index
 var vertical: bool
-var associated_squares: Array[Vector2i]
+var associated_squares: Array
 
 var clear_box: StyleBoxFlat = preload("res://clear_clue_style_box.tres")
 var selected_box: StyleBoxFlat = preload("res://selected_clue_style_box.tres")
@@ -17,12 +19,13 @@ func _ready() -> void:
 	pass
 	
 
-func set_props(n:int,s:String, v:bool, sq: Array[Vector2i]):
+func set_props(n:int, ind: int, s:String, v:bool, sq: Array):
 	clue_number = n
 	%ClueNumber.text = str(n)
 	clue_text = s
 	%ClueText.text = clue_text
 	vertical =v
+	clue_index = ind
 	associated_squares = sq
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

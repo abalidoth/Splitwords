@@ -6,7 +6,7 @@ var progress_bars : Array[ProgressBar] = []
 func _ready() -> void:
 	
 	###TEST ONLY
-	PuzzleHolder.size = Vector2i(6,6)
+	PuzzleHolder.size = Vector2i(4,4)
 	PuzzleHolder.obscurity = 100
 	PuzzleHolder.symmetric = true
 	PuzzleHolder.puzzle=PuzzleUtils.Puzzle.new(PuzzleHolder.size,PuzzleHolder.obscurity,PuzzleHolder.symmetric)
@@ -18,7 +18,7 @@ func _process(delta: float) -> void:
 		PuzzleHolder.puzzle.update()
 		update_puzzle_progress()
 	else:
-		assert(false)
+		get_tree().change_scene_to_file("res://main_screen.tscn")
 
 func update_puzzle_progress() -> void:
 	var num_bars:int = len(progress_bars)
