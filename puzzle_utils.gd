@@ -21,7 +21,7 @@ enum GridState{WALL,UNFIXED, OPEN}
 var tokens: Array[String]
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
-var word_data: DataResource = load("res://word_data.tres")
+var word_data: DataResource# = load("res://word_data.tres")
 
 
 

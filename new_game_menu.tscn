@@ -58,6 +58,7 @@ size_flags_horizontal = 10
 text = "Rows  "
 
 [node name="HeightSpinBox" type="SpinBox" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuLeftVBox/HeightMargin/HeightHBox" unique_id=1816714066]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 4
@@ -79,6 +80,7 @@ layout_mode = 2
 text = "Columns  "
 
 [node name="WidthSpinBox" type="SpinBox" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuLeftVBox/WidthMargin/WidthHBox" unique_id=838709371]
+unique_name_in_owner = true
 layout_mode = 2
 min_value = 3.0
 max_value = 8.0
@@ -96,6 +98,7 @@ layout_mode = 2
 text = "Symmetric Grid  "
 
 [node name="SymmetricCheck" type="CheckBox" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuLeftVBox/SymmetricMargin/SymmetricHBox" unique_id=227293005]
+unique_name_in_owner = true
 layout_mode = 2
 
 [node name="MenuRightVBox" type="VBoxContainer" parent="CenterContainer/VBoxContainer/HBoxContainer" unique_id=103191543]
@@ -117,6 +120,7 @@ theme_override_constants/margin_bottom = 0
 layout_mode = 2
 
 [node name="ObscuritySlider" type="HSlider" parent="CenterContainer/VBoxContainer/HBoxContainer/MenuRightVBox/MarginContainer2/ObscurityHBox" unique_id=758253070]
+unique_name_in_owner = true
 custom_minimum_size = Vector2(170, 0)
 layout_mode = 2
 size_flags_horizontal = 3
@@ -162,5 +166,13 @@ offset_bottom = 131.0
 text = "PUZZLE SETTINGS"
 label_settings = SubResource("LabelSettings_rb5ra")
 
+[node name="TestPuzzleButton" type="Button" parent="." unique_id=38341059]
+offset_left = 331.2951
+offset_top = 563.15485
+offset_right = 339.2951
+offset_bottom = 571.15485
+text = "Load Test Puzzle"
+
 [connection signal="value_changed" from="CenterContainer/VBoxContainer/HBoxContainer/MenuRightVBox/MarginContainer2/ObscurityHBox/ObscuritySlider" to="." method="_on_h_slider_value_changed"]
 [connection signal="pressed" from="CenterContainer/VBoxContainer/MarginContainer/CenterContainer/GeneratePuzzleButton" to="." method="_on_generate_puzzle_button_pressed"]
+[connection signal="pressed" from="TestPuzzleButton" to="." method="_on_test_puzzle_button_pressed"]

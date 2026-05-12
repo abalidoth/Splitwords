@@ -32,9 +32,6 @@ theme_override_styles/panel = ExtResource("2_44d5v")
 [node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=653756509]
 layout_mode = 2
 
-[node name="HSeparator" type="HSeparator" parent="PanelContainer/VBoxContainer" unique_id=831405489]
-layout_mode = 2
-
 [node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/VBoxContainer" unique_id=1839865563]
 layout_mode = 2
 

@@ -14,6 +14,9 @@ var square_scale: float
 var clue_nodes: Dictionary[int,Clue] = {}
 var letterbox_nodes: Dictionary[Vector2i,LetterBox] = {}
 
+var across_empty: bool = true
+var down_empty: bool = true
+
 #In the following, 4-Across is 4 and 3-down is -3.
 var down_across_to_slot: Dictionary[int,int] = {}
 var slot_to_down_across: Dictionary[int,int] = {}
@@ -28,8 +31,18 @@ func create_clue(clue_number:int, clue_index:int, clue_vertical:bool, clue_text:
 	var cl: Clue = Clue_load.instantiate()
 	cl.set_props(clue_number, clue_index, clue_text, clue_vertical, PuzzleHolder.puzzle.slots[clue_index])
 	if clue_vertical:
+		if down_empty:
+			down_empty = false
+		else:
+			var sep = HSeparator.new()
+			%DownVBox.add_child(sep)
 		%DownVBox.add_child(cl)
 	else:
+		if across_empty:
+			across_empty = false
+		else:
+			var sep = HSeparator.new()
+			%AcrossVBox.add_child(sep)
 		%AcrossVBox.add_child(cl)
 	clue_nodes[clue_index] = cl
 
@@ -82,7 +95,7 @@ func _ready() -> void:
 	
 	
 
-func _on_signal_bus_selection_occurred(grid_position: Vector2i):
+func _on_signal_bus_selection_occurred(grid_position: Vector2i, h_slot: Array, v_slot: Array):
 	pass
 	
 func _on_signal_bus_trigger_recheck() -> void:
@@ -92,3 +105,11 @@ func _on_signal_bus_trigger_recheck() -> void:
 func _process(delta: float) -> void:
 	if %AcrossScroll is ScrollContainer:
 		%testlabel.text = str(%AcrossScroll.get_v_scroll_bar().value)+" "+str(get_across_max())
+
+
+func _on_button_pressed() -> void:
+	var puz: PuzzleSaver = PuzzleSaver.new()
+	puz.puzzle = PuzzleHolder.puzzle
+	puz.size = PuzzleHolder.size
+	ResourceSaver.save(puz,"saved_puzzle.tres")
+	pass

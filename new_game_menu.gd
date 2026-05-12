@@ -18,4 +18,17 @@ func _on_h_slider_value_changed(value: float) -> void:
 
 func _on_generate_puzzle_button_pressed() -> void:
 	pass
+	PuzzleHolder.size = Vector2i(%WidthSpinBox.value, %HeightSpinBox.value)
+	PuzzleHolder.obscurity = %ObscuritySlider.value
+	PuzzleHolder.symmetric = %SymmetricCheck.button_pressed
+	PuzzleHolder.puzzle=PuzzleUtils.Puzzle.new(PuzzleHolder.size,PuzzleHolder.obscurity,PuzzleHolder.symmetric)
+
+	get_tree().change_scene_to_file("res://data_load_screen.tscn")
 	
+
+
+func _on_test_puzzle_button_pressed() -> void:
+	var puz=load("res://saved_puzzle.tres")
+	PuzzleHolder.size = puz.size
+	PuzzleHolder.puzzle = puz.puzzle
+	get_tree().change_scene_to_file("res://main_screen.tscn")

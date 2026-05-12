@@ -13,10 +13,11 @@ var vertical: bool
 var associated_squares: Array
 
 var clear_box: StyleBoxFlat = preload("res://clear_clue_style_box.tres")
-var selected_box: StyleBoxFlat = preload("res://selected_clue_style_box.tres")
+var h_selected_box: StyleBoxFlat = preload("res://h_selected_clue_style_box.tres")
+var v_selected_box: StyleBoxFlat = preload("res://v_selected_clue_style_box.tres")
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	SignalBus.selection_occurred.connect(_on_signal_bus_selection_occurred)
 	
 
 func set_props(n:int, ind: int, s:String, v:bool, sq: Array):
@@ -33,12 +34,15 @@ func _process(delta: float) -> void:
 	pass
 	
 func highlight() -> void:
-	%PanelContainer.add_theme_stylebox_override("panel", selected_box)
+	if vertical:
+		%PanelContainer.add_theme_stylebox_override("panel", v_selected_box)
+	else:
+		%PanelContainer.add_theme_stylebox_override("panel", h_selected_box)
 	
 func un_highlight() -> void:
 	%PanelContainer.add_theme_stylebox_override("panel", clear_box)
 	
-func _on_signal_bus_selection_occurred(grid_position_selected:Vector2i) -> void:
+func _on_signal_bus_selection_occurred(grid_position_selected:Vector2i, h_slot: Array, v_slot:Array) -> void:
 	if grid_position_selected in associated_squares:
 		highlight()
 	else:

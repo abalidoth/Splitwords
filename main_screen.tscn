@@ -26,6 +26,7 @@ offset_right = 1150.0
 offset_bottom = 640.0
 grow_horizontal = 0
 size_flags_horizontal = 3
+size_flags_vertical = 0
 theme = ExtResource("3_kwhh3")
 
 [node name="ClueHBox" type="HBoxContainer" parent="RightBar" unique_id=492287436]
@@ -55,7 +56,7 @@ layout_mode = 2
 
 [node name="AcrossScroll" type="ScrollContainer" parent="RightBar/ClueHBox/AcrossLabelVBox/PanelContainer" unique_id=223404657]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 600)
+custom_minimum_size = Vector2(200, 550)
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -87,7 +88,7 @@ layout_mode = 2
 
 [node name="DownScroll" type="ScrollContainer" parent="RightBar/ClueHBox/DownLabelVBox/PanelContainer" unique_id=62770469]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(200, 600)
+custom_minimum_size = Vector2(200, 550)
 layout_mode = 2
 size_flags_horizontal = 3
 
@@ -105,11 +106,20 @@ offset_bottom = 23.0
 
 [node name="Board" type="Node2D" parent="." unique_id=1061300598]
 unique_name_in_owner = true
-position = Vector2(70, 51)
+position = Vector2(23, 72)
 
 [node name="BlackBackground" type="ColorRect" parent="Board" unique_id=1397996149]
 unique_name_in_owner = true
-offset_right = 200.0
-offset_bottom = 200.0
+offset_right = 500.0
+offset_bottom = 500.0
 mouse_filter = 2
 color = Color(0, 0, 0, 1)
+
+[node name="Button" type="Button" parent="." unique_id=1323299251]
+offset_left = 574.0
+offset_top = 604.0
+offset_right = 582.0
+offset_bottom = 612.0
+text = "Save Puzzle"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="PuzzleSaver" format=3 uid="uid://bhd55eugq71bu"]
+
+[ext_resource type="Script" uid="uid://i43xtlltyjw" path="res://puzzle_saver.gd" id="1_1ydom"]
+
+[resource]
+script = ExtResource("1_1ydom")
+size = null

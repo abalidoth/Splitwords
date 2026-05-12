@@ -10,9 +10,13 @@ size = Vector2(380, 380)
 [node name="LetterBox" type="Node2D" unique_id=2086286596]
 script = ExtResource("1_koq0h")
 base_color = Color(1, 1, 1, 1)
-hover_color = Color(0.84, 0.84, 0.84, 1)
-selected_color = Color(0.69, 0.7881667, 1, 1)
-selected_hover_color = Color(0.60719997, 0.6935867, 0.88, 1)
+hover_color = Color(0.8509804, 0.8509804, 0.8509804, 1)
+selected_color = Color(1, 0.72, 0.98600006, 1)
+selected_hover_color = Color(0.9506667, 0.63, 1, 1)
+vertical_clue_color = Color(0.8075, 0.79, 1, 1)
+vertical_hover_color = Color(0.73416674, 0.71000004, 1, 1)
+horizontal_clue_color = Color(1, 0.73, 0.73, 1)
+horizontal_hover_color = Color(1, 0.61, 0.61, 1)
 
 [node name="Border" type="ColorRect" parent="." unique_id=748318104]
 offset_right = 400.0
