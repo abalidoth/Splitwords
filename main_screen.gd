@@ -53,17 +53,17 @@ func _ready() -> void:
 	SignalBus.selection_occurred.connect(_on_signal_bus_selection_occurred)
 	SignalBus.trigger_recheck.connect(_on_signal_bus_trigger_recheck)
 	
-	var board_max_squares = max(PuzzleHolder.size.x,PuzzleHolder.size.y)
+	var board_max_squares = max(PuzzleHolder.puzzle.size.x,PuzzleHolder.puzzle.size.y)
 	square_size = board_max_dim/board_max_squares
 	square_scale = square_size/LETTER_BOX_SIZE
 	
-	%BlackBackground.size = square_size * PuzzleHolder.size
+	%BlackBackground.size = square_size * PuzzleHolder.puzzle.size
 	
 	
 	
 	
-	for j in range(PuzzleHolder.size.y):
-		for i in range(PuzzleHolder.size.x):
+	for j in range(PuzzleHolder.puzzle.size.y):
+		for i in range(PuzzleHolder.puzzle.size.x):
 			var v = Vector2i(i,j)
 			if v in PuzzleHolder.puzzle.squares:
 				var lb:LetterBox = Letterbox_load.instantiate()
@@ -108,8 +108,5 @@ func _process(delta: float) -> void:
 
 
 func _on_button_pressed() -> void:
-	var puz: PuzzleSaver = PuzzleSaver.new()
-	puz.puzzle = PuzzleHolder.puzzle
-	puz.size = PuzzleHolder.size
-	ResourceSaver.save(puz,"saved_puzzle.tres")
+	ResourceSaver.save(PuzzleHolder.puzzle,"saved_puzzle.tres")
 	pass

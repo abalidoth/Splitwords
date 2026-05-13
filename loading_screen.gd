@@ -9,12 +9,12 @@ func _ready() -> void:
 	#PuzzleHolder.size = Vector2i(8,8)
 	#PuzzleHolder.obscurity = 100
 	#PuzzleHolder.symmetric = true
-	#PuzzleHolder.puzzle=PuzzleUtils.Puzzle.new(PuzzleHolder.size,PuzzleHolder.obscurity,PuzzleHolder.symmetric)
+	#PuzzleHolder.puzzle=Puzzle.new(PuzzleHolder.size,PuzzleHolder.obscurity,PuzzleHolder.symmetric)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if PuzzleHolder.puzzle.state != PuzzleUtils.AlgState.FINISHED:
+	if PuzzleHolder.puzzle.state != Puzzle.AlgState.FINISHED:
 		PuzzleHolder.puzzle.update()
 		update_puzzle_progress()
 	else:

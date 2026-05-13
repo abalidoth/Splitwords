@@ -1,6 +1,6 @@
 extends Node2D
 
-var puzzle: PuzzleUtils.Puzzle
+var puzzle: Puzzle
 var puzzle_done = false
 var slots: Array[Array]=[]
 var verts: Array[bool]=[]
@@ -9,7 +9,7 @@ var size: Vector2i = Vector2i(8,8)
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	
-	puzzle=PuzzleUtils.Puzzle.new(size,100,true)
+	puzzle=Puzzle.new(size,100,true)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -17,7 +17,7 @@ func _process(delta: float) -> void:
 	
 	for loop in range(1):
 		%ProgressBar.value = puzzle.completion*100
-		if puzzle.state != PuzzleUtils.AlgState.FINISHED:
+		if puzzle.state != Puzzle.AlgState.FINISHED:
 			puzzle.update()
 		elif not puzzle_done:
 			puzzle_done = true
@@ -36,7 +36,7 @@ func _process(delta: float) -> void:
 				output += "\n"
 			%Label3.text = output
 		else:
-			puzzle=PuzzleUtils.Puzzle.new(size,100,true)
+			puzzle=Puzzle.new(size,100,true)
 			puzzle_done = false
 			
 		%Label2.text = str(puzzle.state)
