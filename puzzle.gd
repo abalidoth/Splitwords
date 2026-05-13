@@ -14,7 +14,6 @@ const DOWN = Vector2i(0,1)
 @export var completion: float
 
 @export var size: Vector2i
-@export var grid: CrossGrid
 @export var symmetric: bool
 @export var slots: Array[Array]
 @export var slot_vertical: Array[bool]
@@ -38,14 +37,15 @@ const DOWN = Vector2i(0,1)
 
 @export var iterations: int = 0
 
-func _init(size_: Vector2i, obscurity_: int, symmetric_: bool) -> void:
+func initialize(size_: Vector2i, obscurity_: int, symmetric_: bool) -> void:
 	completion = 0.0
 	size = size_
 	obscurity = obscurity_
 	symmetric = symmetric_
-	grid = CrossGrid.new(size)
-	grid.generate_grid(symmetric)
-	grid.generate_slots()
+	PuzzleHolder.grid = CrossGrid.new()
+	PuzzleHolder.grid.initialize(size)
+	PuzzleHolder.grid.generate_grid(symmetric)
+	PuzzleHolder.grid.generate_slots()
 	
 	slots = []
 	slot_vertical = []
@@ -56,20 +56,20 @@ func _init(size_: Vector2i, obscurity_: int, symmetric_: bool) -> void:
 	
 	completed_puzzle={}
 	
-	for ac in grid.across_slots:
-		var cursor = grid.slot_starts[ac]
+	for ac in PuzzleHolder.grid.across_slots:
+		var cursor = PuzzleHolder.grid.slot_starts[ac]
 		var out = []
-		for i in range(grid.across_slot_length[ac]):
+		for i in range(PuzzleHolder.grid.across_slot_length[ac]):
 			out.append(cursor)
 			cursor+= RIGHT
 		slots.append(out)
 		slot_vertical.append(false)
 		
 	
-	for dw in grid.down_slots:
-		var cursor = grid.slot_starts[dw]
+	for dw in PuzzleHolder.grid.down_slots:
+		var cursor = PuzzleHolder.grid.slot_starts[dw]
 		var out = []
-		for i in range(grid.down_slot_length[dw]):
+		for i in range(PuzzleHolder.grid.down_slot_length[dw]):
 			out.append(cursor)
 			cursor+= DOWN
 		slots.append(out)
@@ -143,7 +143,8 @@ func update() -> void:
 	
 	if state == AlgState.NEEDS_BACKTRACK:
 		if len(backtrack_choices)== 0:
-			_init(size, obscurity, symmetric) #just restart the process, something went wrong
+			_init()
+			initialize(size, obscurity, symmetric) #just restart the process, something went wrong
 			return
 		var backtrack = backtrack_choices.pop_back()
 		var bt_char_masks:Dictionary[Vector2i,Array] = backtrack[0].duplicate_deep()
@@ -241,7 +242,8 @@ func update() -> void:
 				char_ids.append(completed_puzzle[pos])
 			if char_ids not in PuzzleUtils.word_data.tags_to_word_id:
 				#something has gone wrong with puzzle gen, restart
-				_init(size, obscurity, symmetric)
+				_init()
+				initialize(size, obscurity, symmetric)
 				return
 			word_ids = PuzzleUtils.word_data.tags_to_word_id[char_ids]
 			var clue_lines: Array = []
@@ -379,12 +381,12 @@ func blocks_changed(masks_1:Array[Array], masks_2:Array[Array]) -> Array[bool]:
 	assert(len(masks_1) == len(masks_2))
 	var changes: Array[bool] = []
 	for m in range(len(masks_1)):
-		var changed : bool = false
+		var is_changed : bool = false
 		for b in range(NBLOCKS):
 			if masks_1[m][b]!=masks_2[m][b]:
-				changed = true
+				is_changed = true
 				break
-		changes.append(changed)
+		changes.append(is_changed)
 	return changes
 			
 	

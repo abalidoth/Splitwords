@@ -72,7 +72,7 @@ func _ready() -> void:
 				lb.scale = square_scale*Vector2.ONE
 				lb.grid_position = v
 				letterbox_nodes[v] = lb
-				var clue_num = PuzzleHolder.puzzle.grid.slot_starts.find_key(v)
+				var clue_num = PuzzleHolder.grid.slot_starts.find_key(v)
 				if clue_num != null:
 					lb.set_clue_number(clue_num)
 					for sl_ind in range(len(PuzzleHolder.puzzle.slots)):
@@ -108,5 +108,6 @@ func _process(delta: float) -> void:
 
 
 func _on_button_pressed() -> void:
+	ResourceSaver.save(PuzzleHolder.grid, "saved_grid.tres")
 	ResourceSaver.save(PuzzleHolder.puzzle,"saved_puzzle.tres")
 	pass

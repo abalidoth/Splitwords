@@ -26,7 +26,8 @@ const array_3 = [
 	Vector2i(2,1),
 	Vector2i(2,2),
 ]
-func _init(size_: Vector2i):
+
+func initialize(size_: Vector2i):
 	size = size_
 	for j in range(size.y):
 		for i in range(size.x):

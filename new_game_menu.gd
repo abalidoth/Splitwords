@@ -21,12 +21,14 @@ func _on_generate_puzzle_button_pressed() -> void:
 	PuzzleHolder.size = Vector2i(%WidthSpinBox.value, %HeightSpinBox.value)
 	PuzzleHolder.obscurity = %ObscuritySlider.value
 	PuzzleHolder.symmetric = %SymmetricCheck.button_pressed
-	PuzzleHolder.puzzle=Puzzle.new(PuzzleHolder.size,PuzzleHolder.obscurity,PuzzleHolder.symmetric)
+	PuzzleHolder.puzzle=Puzzle.new()
+	PuzzleHolder.puzzle.initialize(PuzzleHolder.size,PuzzleHolder.obscurity,PuzzleHolder.symmetric)
 
 	get_tree().change_scene_to_file("res://data_load_screen.tscn")
 	
 
 
 func _on_test_puzzle_button_pressed() -> void:
-	PuzzleHolder.puzzle = PuzzleHolder.saved_puzzle
+	PuzzleHolder.puzzle = load("res://saved_puzzle.tres")
+	PuzzleHolder.grid = load("res://saved_grid.tres")
 	get_tree().change_scene_to_file("res://main_screen.tscn")

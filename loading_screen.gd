@@ -5,11 +5,7 @@ var progress_bars : Array[ProgressBar] = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass
-	###TEST ONLY
-	#PuzzleHolder.size = Vector2i(8,8)
-	#PuzzleHolder.obscurity = 100
-	#PuzzleHolder.symmetric = true
-	#PuzzleHolder.puzzle=Puzzle.new(PuzzleHolder.size,PuzzleHolder.obscurity,PuzzleHolder.symmetric)
+	
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
