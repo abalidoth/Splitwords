@@ -1,0 +1,56 @@
+[gd_scene format=3 uid="uid://o8a12p6bp1x6"]
+
+[ext_resource type="Texture2D" uid="uid://bbne5w4l1er2p" path="res://assets/cog.svg" id="1_00yke"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_00yke"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 5
+border_width_top = 5
+border_width_right = 5
+border_width_bottom = 5
+border_color = Color(0, 0, 0, 1)
+border_blend = true
+
+[node name="SettingsScreen" type="Node2D" unique_id=596549925]
+
+[node name="Button" type="Button" parent="." unique_id=407077055]
+offset_left = 10.0
+offset_top = 5.0
+offset_right = 42.0
+offset_bottom = 37.0
+icon = ExtResource("1_00yke")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=411325301]
+offset_left = 523.0
+offset_top = 272.0
+offset_right = 753.0
+offset_bottom = 313.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_00yke")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=811856241]
+layout_mode = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1295352733]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=1579369209]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=530351390]
+layout_mode = 2
+text = "Letter Font"
+
+[node name="MenuButton" type="OptionButton" parent="PanelContainer/MarginContainer/VBoxContainer/HBoxContainer" unique_id=2098823874]
+layout_mode = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "Handwritten"
+popup/item_0/id = 0
+popup/item_1/text = "Typed"
+popup/item_1/id = 1
+popup/item_2/text = "Plain"
+popup/item_2/id = 2

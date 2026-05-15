@@ -3,6 +3,10 @@
 [ext_resource type="Script" uid="uid://bqysxagql2dh6" path="res://data_load_screen.gd" id="1_14edx"]
 [ext_resource type="Texture2D" uid="uid://b4110a72rmn5p" path="res://assets/newspaper_background.jpg" id="1_i6lwb"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_14edx"]
+font_size = 40
+font_color = Color(0, 0, 0, 1)
+
 [node name="DataLoadScreen" type="Node2D" unique_id=1572292260]
 script = ExtResource("1_14edx")
 
@@ -15,8 +19,11 @@ scale = Vector2(0.3, 0.3)
 texture = ExtResource("1_i6lwb")
 
 [node name="Label" type="Label" parent="." unique_id=620231195]
-offset_left = 471.0
-offset_top = 282.0
-offset_right = 511.0
-offset_bottom = 305.0
-text = "Loading data, please wait..."
+offset_left = 221.0
+offset_top = 299.0
+offset_right = 950.0
+offset_bottom = 412.0
+text = "Loading data, please wait...
+(Only happens once per game launch)"
+label_settings = SubResource("LabelSettings_14edx")
+horizontal_alignment = 1

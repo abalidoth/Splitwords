@@ -10,6 +10,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
+func switch_font(f:String)->void:
+	pass
 
 func _on_h_slider_value_changed(value: float) -> void:
 	%ObscurityValue.text = "%3d" % value

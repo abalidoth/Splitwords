@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://ctaftlyrwtbc4"]
+
+[ext_resource type="Texture2D" uid="uid://b4110a72rmn5p" path="res://assets/newspaper_background.jpg" id="1_06t4h"]
+[ext_resource type="Texture2D" uid="uid://65llft1jpctf" path="res://assets/logo_plain.svg" id="2_7vrkn"]
+
+[node name="MainMenu" type="Node2D" unique_id=435797940]
+
+[node name="TextureRect" type="TextureRect" parent="." unique_id=1453202817]
+offset_left = -15.0
+offset_top = -46.0
+offset_right = 3953.0
+offset_bottom = 2410.0
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("1_06t4h")
+
+[node name="LogoPlain" type="Sprite2D" parent="." unique_id=1435943061]
+position = Vector2(546, 381)
+texture = ExtResource("2_7vrkn")

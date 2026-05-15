@@ -1,0 +1,26 @@
+## TODO
+
+- [ ] Font change
+	- [ ] Hook up font change function
+	- [ ] create settingsholder and connect to settings_screen
+	- [ ] make font change change all boxes on mainscreen
+	- [ ] make boxes spawn with right font
+- [ ] How to play page
+- [ ] Finish main menu
+- [ ] Credits page
+- [ ] Answer checker
+	- [ ] Maybe it's easiest to store the answers in the squares all at once
+	- [ ] On load, iterate through the tag ids and the word
+	- [ ] Store across and down separately!
+	- [ ] Be sure to handle double letters.
+- [ ] Congratulations screen
+    - [ ] How many hints used
+- [ ] Hint feature
+    - [ ] Hint square button
+	- [ ] Look up ID, convert to letter(s), establish order
+	- [ ] Red border for hinted squares!
+	- [ ] Hint disables input
+- [ ] Profile algorithm. Why does it get stuck?
+    - [ ] If no way to fix it, add a button
+- [ ] Make settings screen look nicer
+- [ ] Explainer on generate screen

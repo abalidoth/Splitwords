@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dk8fu7bolvksp"]
 
-[ext_resource type="Theme" uid="uid://dkpi0ifiu77j5" path="res://letter_box_label_theme.tres" id="1_gkpdb"]
+[ext_resource type="Theme" uid="uid://dkpi0ifiu77j5" path="res://letter_box_label_theme_sans.tres" id="1_gkpdb"]
 [ext_resource type="Script" uid="uid://b2y4ar18xlawl" path="res://letter_box.gd" id="1_koq0h"]
 [ext_resource type="Theme" uid="uid://do0l4piyq53ho" path="res://letter_box_clue_theme.tres" id="3_raomb"]
 
